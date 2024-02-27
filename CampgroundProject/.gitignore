@@ -1,6 +1,0 @@
-#ignore all node_modules
-node_modules/
-
-#ignore config
-
-config/config.env
