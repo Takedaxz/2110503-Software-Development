@@ -1,0 +1,101 @@
+@startuml 
+left to right direction
+package "Soi Ju"{
+    class "<<Application>>\nMassage Reservation Service\nOrganic Soi Ju Team" as VacQService{}
+
+    class "<<Resource>>\nMassageShops" as ResourceMassageShops{
+        <<GET>> +getMassageShops():MassageShop
+        <<POST>> +createMassageShop():MassageShop
+    }
+
+    class "<<Resource>>\nMassageShop" as ResourceMassageShop {
+        <<GET>> +getMassageShop(): MassageShop
+        <<PUT>> +updateMassageShop(): MassageShop
+        <<DELETE>> +deleteMassageShop(): void
+    }
+
+    class "<<Representation>>\nMassageShop" as RepresentationMassageShop {
+        -name
+        -address
+        -district
+        -province
+        -postalcode
+        -tel
+        -open_time
+        -close_time
+    }
+
+    class "<<Resource>>\nReservations" as ResourceReservations {
+        <<GET>> +getReservations():Reservation
+        <<POST>> +createReservation():Reservation
+    }
+
+    class "<<Resource>>\nReservation" as ResourceReservation {
+        <<GET>> +getReservation(): Reservation
+        <<PUT>> +updateReservation(): Reservation
+        <<DELETE>> +deleteReservation(): void
+    }
+
+
+
+
+    class "<<Representation>>\nReservation" as RepresentationReservation {
+        -reserveDate
+        -user
+        -massage_shop
+        -createAt
+    }
+
+    class "<<Resource>>\nRegister" as ResourceRegister {
+        <<POST>> +register():Token
+    }
+
+    class "<<Resource>>\nLogin" as ResourceLogin {
+        <<POST>> +login():Token
+    }
+
+  
+
+    class "<<Resource>>\nGetMe" as ResourceGetMe {
+        <<GET>> +getMe():User
+    } 
+    class "<<Resource>>\nLogout" as ResourceLogout {
+        <<GET>> +logout():void
+    }
+
+    class "<<Resource>>\nGetUsers" as ResourceGetUsers {
+        <<GET>> +getUsers():User
+    }
+
+    class "<<Representation>>\nUser" as RepresentationUser {
+        -name
+        -email
+        -role    
+        -password
+        -tel
+        -createdAt
+    }
+
+}
+
+VacQService ..> ResourceMassageShops:"/api/v1/massageShops\n<<Path>>"
+ResourceMassageShops ..> ResourceMassageShop: "/{MassageShopId}\n<<Path>>"
+ResourceMassageShop ..> RepresentationMassageShop: "<<use>>"
+ResourceMassageShop ..> ResourceReservations:"/reservations\n<<Path>>"
+
+VacQService ..> ResourceReservations:"/api/v1/reservations\n<<Path>>"
+ResourceReservations ..> ResourceReservation: "/{ReservationId}\n<<Path>>"
+ResourceReservation ..> RepresentationReservation: "<<use>>"
+
+VacQService ..> ResourceRegister:"/api/v1/auth/register\n<<Path>>"
+VacQService ..> ResourceLogin:"/api/v1/auth/login\n<<Path>>"
+VacQService ..> ResourceGetMe:"/api/v1/auth/me\n<<Path>>"
+VacQService ..> ResourceLogout:"/api/v1/auth/logout\n<<Path>>"
+VacQService ..> ResourceGetUsers:"/api/v1/auth/users\n<<Path>>"
+ResourceRegister ..> RepresentationUser: "<<use>>"
+ResourceLogin ..> RepresentationUser : "<<use>>"
+ResourceGetMe ..> RepresentationUser : "<<use>>"
+
+
+
+@enduml
